@@ -90,4 +90,4 @@ if __name__ == '__main__':
     papers = pd.DataFrame(result)
     papers.columns =[i[0] for i in mc.description]
 
-    app.run_server(debug=True)
+    app.run_server(debug=False, port=8080)
