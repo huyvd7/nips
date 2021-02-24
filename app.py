@@ -68,14 +68,15 @@ if __name__ == '__main__':
     parser.add_argument("--host", default="localhost")
     parser.add_argument("--dbname", default="nips")
     args = parser.parse_args()
+
     config = {
     'user': args.user,
     'password': args.password,
     'host': args.host,
     'client_flags': [ClientFlag.SSL],
-    'ssl_ca': 'ssl/server-ca.pem',
-    'ssl_cert': 'ssl/client-cert.pem',
-    'ssl_key': 'ssl/client-key.pem'
+    'ssl_ca': 'server-ca.pem',
+    'ssl_cert': 'client-cert.pem',
+    'ssl_key': 'client-key.pem'
     }
     mydb = mysql.connector.connect(**config)
     
