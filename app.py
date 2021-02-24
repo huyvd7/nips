@@ -76,7 +76,8 @@ if __name__ == '__main__':
     'client_flags': [ClientFlag.SSL],
     'ssl_ca': 'server-ca.pem',
     'ssl_cert': 'client-cert.pem',
-    'ssl_key': 'client-key.pem'
+    'ssl_key': 'client-key.pem',
+    'database': 'nips'
     }
     mydb = mysql.connector.connect(**config)
     
