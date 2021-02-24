@@ -1,0 +1,76 @@
+import plotly.express as px
+import plotly.graph_objs as go
+import io
+import PIL
+import argparse
+
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+import base64
+import dash.dependencies as dd
+
+import pandas as pd
+import mysql.connector
+
+from wordcloud import WordCloud, STOPWORDS
+
+def plot_wc(text):
+    stopwords = set(STOPWORDS)
+    stopwords.update(['model', 'algorithm', 'algorithms', 'method', 'methods', 'problem', 'show', 'models', 'based', 'via', 'problems', 'propose', 'learning', 'using'])
+    wordcloud = WordCloud(stopwords=stopwords,
+                          background_color="white", max_words=30,  width=600, height=400 ).generate(text) 
+    return wordcloud.to_image()
+
+def make_image2(text):
+    img = io.BytesIO()
+    plot_wc(text).save(img, format='PNG')
+    return 'data:image/png;base64,{}'.format(base64.b64encode(img.getvalue()).decode())
+app = dash.Dash(__name__) #, external_stylesheets=external_stylesheets)
+app.layout = html.Div([dcc.RangeSlider(
+        id='slider',
+        min=papers.year.min(),
+        max=papers.year.max(),
+        step=1,
+        value=[2019,2019],tooltip ={'always_visible':False}
+    ),
+    html.Img(id="image_wc"),
+    html.Div(id='output-container-range-slider')
+],
+    style = {'display': 'inline-block', 'width': '25%', 'textAlign': 'center'}
+)
+
+@app.callback(dd.Output('image_wc', 'src'), [dd.Input('image_wc', 'id')])
+def make_image(b):
+    img = io.BytesIO()
+    PIL.Image.open('t.png').save(img, format='PNG')
+    return 'data:image/png;base64,{}'.format(base64.b64encode(img.getvalue()).decode())
+
+@app.callback(
+    dd.Output('output-container-range-slider', 'children'),
+    dd.Output('image_wc', 'src'),
+    [dd.Input('slider', 'value')])
+def update_output(value):
+    y1, y2= value[0], value[1]
+    
+    df = papers[(papers.year>=y1) &
+               ( papers.year<=y2)]
+    text = " ".join(t for t in df.title.astype(str))
+    return f'{y1}-{y2}', make_image2(text)
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--user")
+    parser.add_argument("--password")
+    parser.add_argument("--host", default="localhost")
+    parser.add_argument("--dbname", default="nips")
+    args = parser.parse_args()
+
+    mydb = mysql.connector.connect(
+      host=args.host,
+      user=args.user,
+      passwd=args.passwd,
+      database=args.dbname
+    )
+
+    app.run_server(debug=True)
