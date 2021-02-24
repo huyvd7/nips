@@ -43,11 +43,11 @@ app.layout = html.Div([dcc.RangeSlider(
     style = {'display': 'inline-block', 'width': '25%', 'textAlign': 'center'}
 )
 
-@app.callback(dd.Output('image_wc', 'src'), [dd.Input('image_wc', 'id')])
-def make_image(b):
-    img = io.BytesIO()
-    PIL.Image.open('t.png').save(img, format='PNG')
-    return 'data:image/png;base64,{}'.format(base64.b64encode(img.getvalue()).decode())
+#@app.callback(dd.Output('image_wc', 'src'), [dd.Input('image_wc', 'id')])
+#def make_image(b):
+#    img = io.BytesIO()
+#    PIL.Image.open('t.png').save(img, format='PNG')
+#    return 'data:image/png;base64,{}'.format(base64.b64encode(img.getvalue()).decode())
 
 @app.callback(
     #dd.Output('output-container-range-slider', 'children'),
