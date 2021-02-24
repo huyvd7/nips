@@ -30,6 +30,27 @@ def make_image2(text):
     plot_wc(text).save(img, format='PNG')
     return 'data:image/png;base64,{}'.format(base64.b64encode(img.getvalue()).decode())
 
+cre_config = yaml.safe_load(open("config.yaml"))
+
+config = {
+    'user': cre_config['user'],
+    'password': cre_config['password'],
+    'host': cre_config['host'],
+    'client_flags': [ClientFlag.SSL],
+    'ssl_ca': 'server-ca.pem',
+    'ssl_cert': 'client-cert.pem',
+    'ssl_key': 'client-key.pem',
+    'database': 'nips'
+}
+mydb = mysql.connector.connect(**config)
+
+mc = mydb.cursor()
+sql = "SELECT * FROM papers"
+mc.execute(sql)
+result = mc.fetchall()
+papers = pd.DataFrame(result)
+papers.columns =[i[0] for i in mc.description]
+
 app = dash.Dash(__name__) #, external_stylesheets=external_stylesheets)
 server = app.server
 app.layout = html.Div([dcc.RangeSlider(
@@ -65,26 +86,5 @@ def update_output(value):
     return make_image2(text)
 
 if __name__ == '__main__':
-    cre_config = yaml.safe_load(open("config.yaml"))
-
-    config = {
-    'user': cre_config['user'],
-    'password': cre_config['password'],
-    'host': cre_config['host'],
-    'client_flags': [ClientFlag.SSL],
-    'ssl_ca': 'server-ca.pem',
-    'ssl_cert': 'client-cert.pem',
-    'ssl_key': 'client-key.pem',
-    'database': 'nips'
-    }
-    mydb = mysql.connector.connect(**config)
     
-    print('Check 1: DB connected')    
-    mc = mydb.cursor()
-    sql = "SELECT * FROM papers"
-    mc.execute(sql)
-    result = mc.fetchall()
-    papers = pd.DataFrame(result)
-    papers.columns =[i[0] for i in mc.description]
-
     app.run_server(debug=False, port=8080, host='0.0.0.0')
