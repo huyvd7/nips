@@ -74,7 +74,7 @@ if __name__ == '__main__':
       database=args.dbname
     )
     
-    
+    print('Check 1: DB connected')    
     mc = mydb.cursor()
     sql = "SELECT * FROM papers"
     mc.execute(sql)
