@@ -26,11 +26,12 @@ def make_image2(text):
     img = io.BytesIO()
     plot_wc(text).save(img, format='PNG')
     return 'data:image/png;base64,{}'.format(base64.b64encode(img.getvalue()).decode())
+
 app = dash.Dash(__name__) #, external_stylesheets=external_stylesheets)
 app.layout = html.Div([dcc.RangeSlider(
         id='slider',
-        min=papers.year.min(),
-        max=papers.year.max(),
+        min=1987,
+        max=2019,
         step=1,
         value=[2019,2019],tooltip ={'always_visible':False}
     ),
