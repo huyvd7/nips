@@ -80,10 +80,10 @@ if __name__ == '__main__':
     
     print('Check 1: DB connected')    
     mc = mydb.cursor()
-    sql = "SELECT * FROM papers"
+    sql = "SELECT * FROM papers LIMIT 100"
     mc.execute(sql)
     result = mc.fetchall()
     papers = pd.DataFrame(result)
     papers.columns =[i[0] for i in mc.description]
 
-    app.run_server(debug=False, port=8080)
+    app.run_server(debug=False, port=8080, host='0.0.0.0')
