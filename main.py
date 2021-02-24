@@ -81,7 +81,7 @@ if __name__ == '__main__':
     
     print('Check 1: DB connected')    
     mc = mydb.cursor()
-    sql = "SELECT * FROM papers LIMIT 100"
+    sql = "SELECT * FROM papers"
     mc.execute(sql)
     result = mc.fetchall()
     papers = pd.DataFrame(result)
