@@ -72,5 +72,13 @@ if __name__ == '__main__':
       passwd=args.passwd,
       database=args.dbname
     )
+    
+    
+    mc = mydb.cursor()
+    sql = "SELECT * FROM papers"
+    mc.execute(sql)
+    result = mc.fetchall()
+    papers = pd.DataFrame(result)
+    papers.columns =[i[0] for i in mc.description]
 
     app.run_server(debug=True)
