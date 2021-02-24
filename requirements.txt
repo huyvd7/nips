@@ -5,3 +5,4 @@ wordcloud==1.8.1
 mysql-connector-python
 Pillow==8.1.0
 pyyaml
+gunicorn
