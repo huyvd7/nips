@@ -31,6 +31,7 @@ def make_image2(text):
     return 'data:image/png;base64,{}'.format(base64.b64encode(img.getvalue()).decode())
 
 app = dash.Dash(__name__) #, external_stylesheets=external_stylesheets)
+server = app.server
 app.layout = html.Div([dcc.RangeSlider(
         id='slider',
         min=1987,
