@@ -9,6 +9,8 @@ import dash_core_components as dcc
 import dash_html_components as html
 import base64
 import dash.dependencies as dd
+from mysql.connector.constants import ClientFlag
+
 
 import pandas as pd
 import mysql.connector
@@ -66,13 +68,16 @@ if __name__ == '__main__':
     parser.add_argument("--host", default="localhost")
     parser.add_argument("--dbname", default="nips")
     args = parser.parse_args()
-
-    mydb = mysql.connector.connect(
-      host=args.host,
-      user=args.user,
-      passwd=args.password,
-      database=args.dbname
-    )
+    config = {
+    'user': args.user,
+    'password': args.password,
+    'host': args.host,
+    'client_flags': [ClientFlag.SSL],
+    'ssl_ca': 'ssl/server-ca.pem',
+    'ssl_cert': 'ssl/client-cert.pem',
+    'ssl_key': 'ssl/client-key.pem'
+    }
+    mydb = mysql.connector.connect(**config)
     
     print('Check 1: DB connected')    
     mc = mydb.cursor()
