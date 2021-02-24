@@ -2,7 +2,8 @@ import plotly.express as px
 import plotly.graph_objs as go
 import io
 import PIL
-import argparse
+import yaml
+
 
 import dash
 import dash_core_components as dcc
@@ -63,17 +64,12 @@ def update_output(value):
     return make_image2(text)
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--user")
-    parser.add_argument("--password")
-    parser.add_argument("--host", default="localhost")
-    parser.add_argument("--dbname", default="nips")
-    args = parser.parse_args()
+    cre_config = yaml.safe_load(open("config.yaml"))
 
     config = {
-    'user': args.user,
-    'password': args.password,
-    'host': args.host,
+    'user': cre_config['user'],
+    'password': cre_config['password'],
+    'host': cre_config['host'],
     'client_flags': [ClientFlag.SSL],
     'ssl_ca': 'server-ca.pem',
     'ssl_cert': 'client-cert.pem',
