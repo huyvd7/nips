@@ -50,7 +50,7 @@ def make_image(b):
     return 'data:image/png;base64,{}'.format(base64.b64encode(img.getvalue()).decode())
 
 @app.callback(
-    dd.Output('output-container-range-slider', 'children'),
+    #dd.Output('output-container-range-slider', 'children'),
     dd.Output('image_wc', 'src'),
     [dd.Input('slider', 'value')])
 def update_output(value):
@@ -59,7 +59,8 @@ def update_output(value):
     df = papers[(papers.year>=y1) &
                ( papers.year<=y2)]
     text = " ".join(t for t in df.title.astype(str))
-    return f'{y1}-{y2}', make_image2(text)
+    #return f'{y1}-{y2}', make_image2(text)
+    return make_image2(text)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
