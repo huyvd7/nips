@@ -70,7 +70,7 @@ if __name__ == '__main__':
     mydb = mysql.connector.connect(
       host=args.host,
       user=args.user,
-      passwd=args.passwd,
+      passwd=args.password,
       database=args.dbname
     )
     
